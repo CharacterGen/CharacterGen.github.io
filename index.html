@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Efficient 3D Character Generation from Single Images">
+  <meta name="keywords" content="AIGC 3D, Diffusion Model">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CharacterGen: Efficient 3D Character Generation from Single Images</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/avatar.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/video_comparison.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          No More Research
+        </a>
+        <!-- <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div> -->
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="cartoon-font">
+            <p><span class="title-text">CharacterGen</span>: Efficient 3D Character Generation from Single Images</p>
+            <p>with Multi-View Pose Calibration</p></h1>
+            </span>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Annoymous Writer
+            </span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="./static/supp/CharacterGen.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href="./static/supp/video.mp4"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+<span class="teaser">
+          <img src="./static/images/teaser.png" class="teaser image"
+            alt="teaser image" />
+             <span class="title-text">CharacterGen</span> takes a single input image and generates 3D pose-unified character meshes with high-quality and consistent appearance, which can be directly utilized in downstream rigging and animation workflows.
+          <p> </p>
+</span>
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            In this paper, we present <span class="title-text">CharacterGen</span>, a framework developed to efficiently generate 3D characters. <span class="title-text">CharacterGen</span>
+            introduces a streamlined generation pipeline along with an image-conditioned multi-view diffusion model. This model
+            effectively calibrates input poses to a canonical form while retaining key attributes of the input image, thereby
+            addressing the challenges posed by diverse poses. A transformer-based, generalizable sparse-view reconstruction model is
+            the other core component of our approach, facilitating the creation of detailed 3D models from multi-view images. We
+            also adopt a texture-back-projection strategy to produce high-quality texture map. Additionally, we have curated a
+            dataset of anime characters, rendered in multiple poses and views, to train and evaluate our model. Our approach has
+            been thoroughly evaluated through quantitative and qualitative experiments, showing its proficiency in generating 3D
+            characters with high-quality shapes and textures, ready for downstream applications such as rigging and animation.
+            Our code, dataset and pretrained weight will be available soon.
+          </p>
+          <img src="./static/images/pipeline.png" class="interpolation-image"
+            alt="pipeline image" />
+          <p>
+            We show the whole pipeline above of how we generate four views of consistent images. 
+          </p>
+            <img src="./static/images/lrm.png" class="interpolation-image" alt="lrm image" />
+          <p>
+            We show the pipeline above on how we generate final refined character meshes from generated multi-view images. In the first
+            stage, we utilize a deep transformer-based network to generate an character with a coarse texture and then adopt our texture back-projection
+            strategy to enhance the appearance of the generated mesh.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+
+        <h2 class="title is-3">Our Results</h2>
+            <div style="display: flex; flex-wrap: nowarp;">
+              <div style="width: 33%">
+                <p class="small-text">Single Input Image</p>
+              </div>
+              <div style="width: 33%">
+                <p class="small-text">2D Multi-View Images</p>
+              </div>
+              <div style="width: 33%">
+                <p class="small-text">3D Character</p>
+              </div>
+            </div>
+
+        <div class="row captioned_videos">
+
+            <div style="display: flex; flex-wrap: nowarp;">
+            <div style="flex: 0 0 33.333333%; max-width: 33.333333%;">
+                <img src="./static/images/ours/1.png" alt="1" style="width: 100%">
+            </div>
+            <div style="flex: 0 0 33.333333%; max-width: 33.333333%;">
+                <img src="./static/images/ours_multiview/1.png" alt="2" style="width: 100%">
+            </div>
+
+            <div class="video-compare-container">
+                <video class="video lazy" id="ex1" loop playsinline autoplay muted onplay="resizeAndPlay(this)">
+                    <source src="./static/videos/ours/1.mp4" type="video/mp4"></source>
+                </video>
+                <canvas height="512" id="ex1Merge" width="1024" style="position: relative; top: 0; left: 0; z-index: 10; width: 100%; display: block; margin: 0 auto; background-size: cover;"></canvas>
+            </div>
+            </div>
+
+
+            <div style="display: flex; flex-wrap: nowarp;">
+            <div style="flex: 0 0 33.333333%; max-width: 33.333333%;">
+                <img src="./static/images/ours/2.png" alt="2" style="width: 100%">
+            </div>
+            <div style="flex: 0 0 33.333333%; max-width: 33.333333%;">
+                <img src="./static/images/ours_multiview/2.png" alt="2" style="width: 100%">
+            </div>
+
+            <div class="video-compare-container">
+                <video class="video lazy" id="ex2" loop playsinline autoplay muted onplay="resizeAndPlay(this)">
+                    <source src="./static/videos/ours/2.mp4" type="video/mp4"></source>
+                </video>
+                <canvas height="512" id="ex2Merge" width="1024" style="position: relative; top: 0; left: 0; z-index: 10; width: 100%; display: block; margin: 0 auto; background-size: cover;"></canvas>
+            </div>
+            </div>
+
+
+            <div style="display: flex; flex-wrap: nowarp;">
+            <div style="flex: 0 0 33.333333%; max-width: 33.333333%;">
+                <img src="./static/images/ours/3.png" alt="3" style="width: 100%">
+            </div>
+            <div style="flex: 0 0 33.333333%; max-width: 33.333333%;">
+                <img src="./static/images/ours_multiview/3.png" alt="3" style="width: 100%">
+            </div>
+
+            <div class="video-compare-container">
+                <video class="video lazy" id="ex3" loop playsinline autoplay muted onplay="resizeAndPlay(this)">
+                    <source src="./static/videos/ours/3.mp4" type="video/mp4"></source>
+                </video>
+                <canvas height="512" id="ex3Merge" width="1024" style="position: relative; top: 0; left: 0; z-index: 10; width: 100%; display: block; margin: 0 auto; background-size: cover;"></canvas>
+            </div>
+            </div>
+        </div> 
+
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">2D Comparsion Results</h2>
+          <img src="./static/images/res_2d.png" class="interpolation-image"
+            alt="res 2d image" />
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">3D Comparsion Results</h2>
+
+        <div class="row" style="margin-bottom: 0px;">
+          <div class="col-xs-15 compare-title " style="width: 25%">
+            <p class="small-text">Input Image</p>
+          </div>
+          <div class="col-xs-15 compare-title " style="width: 25%">
+            <div class="title-text">
+              <p class="small-text">
+                CharacterGen
+              </p>
+            </div>
+          </div>
+          <div class="col-xs-15 compare-title " style="width: 25%">
+            <p class="small-text">ImageDream</p>
+          </div>
+          <div class="col-xs-15 compare-title " style="width: 25%">
+            <p class="small-text">Magic123</p>
+          </div>
+
+          <div id="content-container"></div>
+
+          <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                  const container = document.getElementById('content-container');
+                  for (let i = 1; i <= 10; i++) {
+                      if(i == 3) continue;
+                      const imageSrc = `./static/images/3d/${i}.png`;
+                      const videoSrc = `./static/videos/3d/output_${i}.mp4`;
+
+                      const htmlContent = `
+                        <div class="col-xs-15">
+                          <img src="${imageSrc}" alt="${i}.png" style="width: 80%">
+                        </div>
+                        <video class="video lazy" loop playsinline autoplay muted style="width: 512px">
+                            <source src="${videoSrc}" type="video/mp4"></source>
+                        </video>
+                      </div>
+                      `;
+
+                      container.innerHTML += htmlContent;
+                  }
+                const videos = document.querySelectorAll('.video');
+
+                // 为每个视频添加事件监听器，以确保它们加载完成
+              //videos.forEach(video => {
+              //  video.onloadeddata = function () {
+              //    // 检查所有视频是否准备就绪
+              //    const allReady = Array.from(videos).every(v => v.readyState >= 3); // 3 表示 HAVE_FUTURE_DATA，即当前位置和未来的几帧已经下载好
+              //    if (allReady) {
+              //      // 所有视频都准备好了，开始播放
+              //      videos.forEach(v => v.play());
+              //    }
+              //  };
+              //});
+              });
+          </script>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+    </section>
+    
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <a class="icon-link" href="./static/supp/CharacterGen.pdf">
+            <i class="fas fa-file-pdf"></i>
+          </a>
+          <!-- <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+            <i class="fab fa-github"></i>
+          </a> -->
+        </div>
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content">
+              <p>
+                This website is licensed under a <a rel="license"
+                  href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                  Commons Attribution-ShareAlike 4.0 International License</a>.
+              </p>
+              <p>
+                We develop this website with <a href="https://github.com/nerfies/nerfies.github.io">source code of nerfies
+                  page</a>.
+                Thanks for their open source contributions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+    </body>
+    
+    </html>
