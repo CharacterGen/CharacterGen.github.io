@@ -20,13 +20,20 @@ body {
 
 .teaser .hero-body {
   padding-top: 0;
-  padding-bottom: 3rem;
+  padding-bottom: 0rem;
+}
+
+.hero-body{
+  padding: 0;
 }
 
 .teaser {
   font-family: 'Google Sans', sans-serif;
 }
 
+.section{
+  padding: 0;
+}
 
 .publication-title {
 }
